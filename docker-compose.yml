@@ -1,0 +1,41 @@
+version: '3.6'
+
+services:
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    container_name: asw_rabbitmq
+    labels:
+      kompose.service.type: nodeport
+    ports:
+      - '4369:4369'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    volumes:
+      - 'rabbitmq_data:/bitnami'
+    networks:
+      - asw_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  redis:
+    image: redis:latest
+    container_name: asw_redis
+    # command: echo never > /sys/kernel/mm/transparent_hugepage/enabled
+    volumes:
+      - 'redis_data:/data'
+    networks:
+      - asw_network
+              
+volumes:
+  rabbitmq_data:
+    driver: local
+  redis_data:
+    driver: local
+      
+networks:
+  asw_network:
+    name: asw_network
+    external: true
