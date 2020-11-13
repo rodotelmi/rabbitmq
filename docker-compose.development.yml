@@ -35,8 +35,10 @@ services:
 
 volumes:
   rabbitmq_data:
+    name: rabbitmq_data
     driver: local
   redis_data:
+    name: redis_data
     driver: local      
 
     
