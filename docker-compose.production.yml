@@ -10,10 +10,10 @@ services:
       - RABBITMQ_USERNAME=asw  
       - RABBITMQ_PASSWORD=oyeee
     ports:
-      - '4369:4369'
-      - '68.183.226.163:5672:5672'
-      - '25672:25672'
-      - '68.183.226.163:15672:15672'
+      - '127.0.0.1:4369:4369'
+      - '127.0.0.1:68.183.226.163:5672:5672'
+      - '127.0.0.1:25672:25672'
+      - '127.0.0.1:15672:15672'
     volumes:
       - 'rabbitmq_data:/bitnami'
     networks:
@@ -35,9 +35,11 @@ services:
 
 volumes:
   rabbitmq_data:
+    name: rabbitmq_data
     driver: local
   redis_data:
-    driver: local                 
+    name: redis_data
+    driver: local      
       
 networks:
   asw_network:
