@@ -7,7 +7,7 @@ services:
     labels:
       kompose.service.type: nodeport
     environment:
-      - RABBITMQ_USERNAME=asw  
+      - RABBITMQ_USERNAME=asw
       - RABBITMQ_PASSWORD=oyeee
     ports:
       - '127.0.0.1:4369:4369'
@@ -23,7 +23,12 @@ services:
       interval: 30s
       timeout: 10s
       retries: 7
-      
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://10.8.8.1:12201"
+        tag: "switch_rabbit"
+
   redis:
     image: redis:latest
     container_name: asw_redis
@@ -31,7 +36,14 @@ services:
     volumes:
       - 'redis_data:/data'
     networks:
-      - asw_network                    
+      - asw_network
+
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://10.8.8.1:12201"
+        tag: "switch_redis"
+
 
 volumes:
   rabbitmq_data:
@@ -39,8 +51,8 @@ volumes:
     driver: local
   redis_data:
     name: redis_data
-    driver: local      
-      
+    driver: local
+
 networks:
   asw_network:
     name: asw_network
